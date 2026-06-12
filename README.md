@@ -16,18 +16,7 @@
 
 ***
 
-## 📖 目录
 
-- [✨ 核心功能](#-核心功能)
-- [📸 应用截图](#-应用截图)
-- [🛠 技术架构](#-技术架构)
-- [📁 项目结构](#-项目结构)
-- [🚀 快速开始](#-快速开始)
-- [⚙ 开发环境](#-开发环境)
-- [🤝 贡献指南](#-贡献指南)
-- [📄 开源协议](#-开源协议)
-
-***
 
 ## ✨ 核心功能
 
@@ -168,21 +157,7 @@ cd Statistical-Analysis
 | JDK                   | Java 8+               |
 | Android SDK           | API 28 - API 34       |
 
-***
 
-## 🤝 贡献指南
-
-欢迎为「统计分析记账」项目贡献代码！
-
-1. **Fork** 本仓库
-2. 创建特性分支：`git checkout -b feature/AmazingFeature`
-3. 提交更改：`git commit -m 'Add some AmazingFeature'`
-4. 推送分支：`git push origin feature/AmazingFeature`
-5. 发起 **Pull Request**
-
-> 提交前请确保代码风格与现有代码保持一致，并充分测试！
-
-***
 
 ## ❓ 常见问题
 
