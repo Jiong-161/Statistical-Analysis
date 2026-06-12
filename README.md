@@ -26,6 +26,9 @@ An Android personal finance tracker with expense/income recording, chart analyti
 | 主页 · Main | 图表 · Chart | 记账 · Record |
 |:---:|:---:|:---:|
 | 今日收支概览 | 饼图 + 柱状图分析 | 分类选择 & 金额输入 |
+![alt text](G:\Android\accounts\docs\image.png)
+![alt text](docs\image-3.png)
+![alt text](docs\image.png)
 
 ## 🛠 技术栈 · Tech Stack
 
