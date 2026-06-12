@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/list_item_margin_h"
+    android:layout_marginVertical="@dimen/list_item_margin_v"
+    android:background="@drawable/bg_card_default"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/spacing_lg">
+
+    <ImageView
+        android:id="@+id/item_mainlv_iv"
+        android:layout_width="@dimen/icon_size_md"
+        android:layout_height="@dimen/icon_size_md"
+        android:background="@drawable/bg_type_icon"
+        android:padding="@dimen/spacing_sm"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_qita"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_mainlv_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="其他"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_subtitle"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/item_mainlv_tv_beizhu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="备注"
+            android:textColor="@color/text_hint"
+            android:textSize="@dimen/text_caption"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_mainlv_tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥ 0.00"
+            android:textColor="@color/outcome"
+            android:textSize="@dimen/text_subtitle"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/item_mainlv_tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:text="00:00"
+            android:textColor="@color/text_hint"
+            android:textSize="@dimen/text_caption"/>
+    </LinearLayout>
+</LinearLayout>
