@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <!-- 顶部搜索栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:background="@color/surface"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/search_iv_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/iv_back"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="返回"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_search_bar"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:layout_marginHorizontal="8dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/search_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="搜索账单"
+                android:maxLines="1"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:textSize="14sp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"/>
+
+            <ImageView
+                android:id="@+id/search_iv_sh"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/iv_search"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="搜索"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 排序栏（固定在顶部，避免被列表遮挡） -->
+    <LinearLayout
+        android:id="@+id/layout_sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@color/surface"
+        android:gravity="center_vertical"
+        android:elevation="6dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="排序方式:"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"/>
+
+        <TextView
+            android:id="@+id/tv_sort_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="36dp"
+            android:gravity="center"
+            android:text="时间"
+            android:textSize="14sp"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/selector_sort_bg"
+            android:textColor="@drawable/selector_sort_text"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <TextView
+            android:id="@+id/tv_sort_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="36dp"
+            android:gravity="center"
+            android:text="金额"
+            android:textSize="14sp"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/selector_sort_bg"
+            android:textColor="@drawable/selector_sort_text"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <TextView
+            android:id="@+id/tv_sort_relevance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="36dp"
+            android:gravity="center"
+            android:text="相关度"
+            android:textSize="14sp"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/selector_sort_bg"
+            android:textColor="@drawable/selector_sort_text"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_result_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:text="共找到 0 条结果"
+        android:textSize="12sp"
+        android:textColor="@color/text_hint"
+        android:background="@color/background"
+        android:visibility="gone"/>
+
+    <!-- 内容区：历史记录与搜索结果互斥显示 -->
+    <FrameLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/layout_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="搜索历史"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_clear_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清空"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimary"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_history"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:clipToPadding="false"
+                android:paddingVertical="8dp"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/search_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:clipToPadding="false"
+            android:paddingVertical="8dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/search_tv_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="暂无数据"
+            android:textSize="16sp"
+            android:textColor="@color/text_hint"
+            android:drawablePadding="16dp"
+            android:drawableTop="@drawable/iv_empty"
+            android:visibility="gone"/>
+    </FrameLayout>
+</LinearLayout>

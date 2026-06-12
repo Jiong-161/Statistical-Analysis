@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 顶部标题栏 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/surface"
+            android:elevation="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/spacing_sm">
+
+            <ImageView
+                android:id="@+id/chart_iv_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="@dimen/spacing_sm"
+                android:src="@drawable/iv_back"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/chart_info"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_title"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/chart_iv_calendar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="@dimen/spacing_sm"
+                android:src="@drawable/it_rili"/>
+        </LinearLayout>
+
+        <!-- 年月选择显示 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="10dp"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/chart_tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2024年01月"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:drawableRight="@drawable/ih_biaoge"
+                android:drawablePadding="5dp"/>
+        </LinearLayout>
+
+        <!-- 收支总览卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:padding="15dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/month_out"
+                    android:textSize="12sp"
+                    android:textColor="@color/grey"/>
+
+                <TextView
+                    android:id="@+id/chart_tv_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥0.00"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="@color/background"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/month_in"
+                    android:textSize="12sp"
+                    android:textColor="@color/grey"/>
+
+                <TextView
+                    android:id="@+id/chart_tv_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥0.00"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/green_006400"
+                    android:layout_marginTop="5dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 图表类型切换 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/chart_tv_outcome"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/out"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:padding="12dp"
+                android:background="@color/background"/>
+
+            <TextView
+                android:id="@+id/chart_tv_income"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/in"
+                android:textSize="14sp"
+                android:textColor="@color/grey"
+                android:gravity="center"
+                android:padding="12dp"/>
+        </LinearLayout>
+
+        <!-- 时间维度切换 -->
+        <LinearLayout
+            android:id="@+id/chart_time_dimension_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:layout_marginTop="1dp">
+
+            <TextView
+                android:id="@+id/chart_tv_day"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="日"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:padding="12dp"
+                android:background="@color/background"/>
+
+            <TextView
+                android:id="@+id/chart_tv_month"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="月"
+                android:textSize="14sp"
+                android:textColor="@color/grey"
+                android:gravity="center"
+                android:padding="12dp"/>
+
+            <TextView
+                android:id="@+id/chart_tv_year"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="年"
+                android:textSize="14sp"
+                android:textColor="@color/grey"
+                android:gravity="center"
+                android:padding="12dp"/>
+        </LinearLayout>
+
+        <!-- 饼图区域 -->
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart_pie"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+
+        <!-- 柱状图区域 -->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/chart_bar"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+</ScrollView>

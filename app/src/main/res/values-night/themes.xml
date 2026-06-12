@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.Theme.Application" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/grey_900</item>
+        <item name="android:windowBackground">@color/grey_900</item>
+        <item name="android:statusBarColor">@color/grey_900</item>
+        <item name="android:textColorPrimary">@color/grey_100</item>
+        <item name="android:textColorSecondary">@color/grey_400</item>
+    </style>
+</resources>

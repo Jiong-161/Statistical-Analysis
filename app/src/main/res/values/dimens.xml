@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 间距 -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">12dp</dimen>
+    <dimen name="spacing_lg">16dp</dimen>
+    <dimen name="spacing_xl">24dp</dimen>
+
+    <!-- 圆角 -->
+    <dimen name="radius_sm">8dp</dimen>
+    <dimen name="radius_md">12dp</dimen>
+    <dimen name="radius_lg">16dp</dimen>
+    <dimen name="radius_xl">24dp</dimen>
+
+    <!-- 字号 -->
+    <dimen name="text_caption">12sp</dimen>
+    <dimen name="text_body">14sp</dimen>
+    <dimen name="text_subtitle">16sp</dimen>
+    <dimen name="text_title">18sp</dimen>
+    <dimen name="text_headline">22sp</dimen>
+    <dimen name="text_display">28sp</dimen>
+
+    <!-- 组件 -->
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="bottom_bar_height">72dp</dimen>
+    <dimen name="icon_size_sm">24dp</dimen>
+    <dimen name="icon_size_md">40dp</dimen>
+    <dimen name="list_item_margin_h">12dp</dimen>
+    <dimen name="list_item_margin_v">4dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+</resources>
