@@ -255,9 +255,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                         return;
                     }
 
-                    // 查询用户信息用于校验旧密码
-                    UserBean user = DBManager.queryUserByUsername(
-                            spf.getString("current_username", ""));
+                    // 按用户ID查询用户信息用于校验旧密码（主键索引，效率更高）
+                    UserBean user = DBManager.queryUserById(currentUserId);
                     if (user == null) {
                         Toast.makeText(SettingsActivity.this, "用户信息不存在，请重新登录",
                                 Toast.LENGTH_SHORT).show();

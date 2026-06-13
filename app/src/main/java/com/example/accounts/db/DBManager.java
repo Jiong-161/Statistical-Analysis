@@ -540,6 +540,21 @@ public class DBManager {
         return 0f;
     }
 
+    /**
+     * 从Cursor读取一行数据封装为UserBean
+     * queryUserByUsername / queryUserById 共用，消除重复代码
+     */
+    @SuppressLint("Range")
+    private static UserBean readUserBean(Cursor cursor) {
+        int id = cursor.getInt(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_ID));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_USERNAME));
+        String hash = cursor.getString(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_PASSWORD_HASH));
+        String salt = cursor.getString(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_SALT));
+        int status = cursor.getInt(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_STATUS));
+        long createdAt = cursor.getLong(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_CREATED_AT));
+        return new UserBean(id, name, hash, salt, status, createdAt);
+    }
+
     // ==================== 用户管理方法 ====================
 
     /**
@@ -592,16 +607,38 @@ public class DBManager {
                     " WHERE " + DBOpenHelper.USER_USERNAME + " = ? LIMIT 1";
             cursor = getDb().rawQuery(sql, new String[]{username});
             if (cursor.moveToFirst()) {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_ID));
-                String name = cursor.getString(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_USERNAME));
-                String hash = cursor.getString(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_PASSWORD_HASH));
-                String salt = cursor.getString(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_SALT));
-                int status = cursor.getInt(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_STATUS));
-                long createdAt = cursor.getLong(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_CREATED_AT));
-                bean = new UserBean(id, name, hash, salt, status, createdAt);
+                bean = readUserBean(cursor);
             }
         } catch (Exception e) {
             android.util.Log.e("DBManager", "queryUserByUsername: 查询失败", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return bean;
+    }
+
+    /**
+     * 根据用户ID查询用户完整信息
+     * 通过主键查询，效率高于按用户名查询（主键索引）
+     *
+     * @param userId 用户ID
+     * @return 查询到返回UserBean对象；未找到或异常时返回null
+     */
+    @SuppressLint("Range")
+    public static UserBean queryUserById(int userId) {
+        UserBean bean = null;
+        Cursor cursor = null;
+        try {
+            String sql = "SELECT * FROM " + DBOpenHelper.TABLE_USER +
+                    " WHERE " + DBOpenHelper.USER_ID + " = ? LIMIT 1";
+            cursor = getDb().rawQuery(sql, new String[]{String.valueOf(userId)});
+            if (cursor.moveToFirst()) {
+                bean = readUserBean(cursor);
+            }
+        } catch (Exception e) {
+            android.util.Log.e("DBManager", "queryUserById: 查询失败", e);
         } finally {
             if (cursor != null) {
                 cursor.close();

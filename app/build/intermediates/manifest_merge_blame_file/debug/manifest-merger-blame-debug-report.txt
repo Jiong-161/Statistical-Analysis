@@ -49,99 +49,100 @@
 30-->G:\Android\accounts\app\src\main\AndroidManifest.xml:15:9-41
 31        android:supportsRtl="true"
 31-->G:\Android\accounts\app\src\main\AndroidManifest.xml:16:9-35
-32        android:theme="@style/AppTheme" >
-32-->G:\Android\accounts\app\src\main\AndroidManifest.xml:17:9-40
-33        <activity
-33-->G:\Android\accounts\app\src\main\AndroidManifest.xml:19:9-21:40
-34            android:name="com.example.accounts.HistoryActivity"
-34-->G:\Android\accounts\app\src\main\AndroidManifest.xml:20:13-44
-35            android:exported="false" />
-35-->G:\Android\accounts\app\src\main\AndroidManifest.xml:21:13-37
-36        <activity
-36-->G:\Android\accounts\app\src\main\AndroidManifest.xml:22:9-24:40
-37            android:name="com.example.accounts.ChartActivity"
-37-->G:\Android\accounts\app\src\main\AndroidManifest.xml:23:13-42
-38            android:exported="false" />
-38-->G:\Android\accounts\app\src\main\AndroidManifest.xml:24:13-37
-39        <activity
-39-->G:\Android\accounts\app\src\main\AndroidManifest.xml:25:9-27:40
-40            android:name="com.example.accounts.MainActivity"
-40-->G:\Android\accounts\app\src\main\AndroidManifest.xml:26:13-41
-41            android:exported="false" />
-41-->G:\Android\accounts\app\src\main\AndroidManifest.xml:27:13-37
-42        <activity
-42-->G:\Android\accounts\app\src\main\AndroidManifest.xml:28:9-30:40
-43            android:name="com.example.accounts.SearchActivity"
-43-->G:\Android\accounts\app\src\main\AndroidManifest.xml:29:13-43
-44            android:exported="false" /> <!-- <activity -->
-44-->G:\Android\accounts\app\src\main\AndroidManifest.xml:30:13-37
-45        <!-- android:name="." -->
-46        <!-- android:exported="false" /> -->
-47        <activity
-47-->G:\Android\accounts\app\src\main\AndroidManifest.xml:33:9-35:40
-48            android:name="com.example.accounts.RecordActivity"
-48-->G:\Android\accounts\app\src\main\AndroidManifest.xml:34:13-43
-49            android:exported="false" />
-49-->G:\Android\accounts\app\src\main\AndroidManifest.xml:35:13-37
-50        <activity
-50-->G:\Android\accounts\app\src\main\AndroidManifest.xml:36:9-38:61
-51            android:name="com.example.accounts.utils.login"
-51-->G:\Android\accounts\app\src\main\AndroidManifest.xml:37:13-40
-52            android:theme="@style/AppTheme.WithActionBar" />
-52-->G:\Android\accounts\app\src\main\AndroidManifest.xml:38:13-58
-53        <activity
-53-->G:\Android\accounts\app\src\main\AndroidManifest.xml:39:9-41:40
-54            android:name="com.example.accounts.SettingsActivity"
-54-->G:\Android\accounts\app\src\main\AndroidManifest.xml:40:13-45
-55            android:exported="false" />
-55-->G:\Android\accounts\app\src\main\AndroidManifest.xml:41:13-37
-56        <activity
-56-->G:\Android\accounts\app\src\main\AndroidManifest.xml:42:9-44:40
-57            android:name="com.example.accounts.AboutActivity"
-57-->G:\Android\accounts\app\src\main\AndroidManifest.xml:43:13-42
-58            android:exported="false" />
-58-->G:\Android\accounts\app\src\main\AndroidManifest.xml:44:13-37
-59        <activity
-59-->G:\Android\accounts\app\src\main\AndroidManifest.xml:45:9-54:20
-60            android:name="com.example.accounts.userActivity"
-60-->G:\Android\accounts\app\src\main\AndroidManifest.xml:46:13-41
-61            android:exported="true"
-61-->G:\Android\accounts\app\src\main\AndroidManifest.xml:47:13-36
-62            android:theme="@style/AppTheme.WithActionBar" >
-62-->G:\Android\accounts\app\src\main\AndroidManifest.xml:48:13-58
-63            <intent-filter>
-63-->G:\Android\accounts\app\src\main\AndroidManifest.xml:49:13-53:29
-64                <action android:name="android.intent.action.MAIN" />
-64-->G:\Android\accounts\app\src\main\AndroidManifest.xml:50:17-69
-64-->G:\Android\accounts\app\src\main\AndroidManifest.xml:50:25-66
-65
-66                <category android:name="android.intent.category.LAUNCHER" />
-66-->G:\Android\accounts\app\src\main\AndroidManifest.xml:52:17-77
-66-->G:\Android\accounts\app\src\main\AndroidManifest.xml:52:27-74
-67            </intent-filter>
-68        </activity>
-69
-70        <provider
-70-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-71            android:name="androidx.startup.InitializationProvider"
-71-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
-72            android:authorities="com.example.accounts.androidx-startup"
-72-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
-73            android:exported="false" >
-73-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
-74            <meta-data
-74-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-75                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-75-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
-76                android:value="androidx.startup" />
-76-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
-77            <meta-data
-77-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\C\.gradle\caches\transforms-3\85600535b09aca04eb153b95aac9d706\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
-78                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-78-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\C\.gradle\caches\transforms-3\85600535b09aca04eb153b95aac9d706\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
-79                android:value="androidx.startup" />
-79-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\C\.gradle\caches\transforms-3\85600535b09aca04eb153b95aac9d706\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
-80        </provider>
-81    </application>
-82
-83</manifest>
+32        android:testOnly="true"
+33        android:theme="@style/AppTheme" >
+33-->G:\Android\accounts\app\src\main\AndroidManifest.xml:17:9-40
+34        <activity
+34-->G:\Android\accounts\app\src\main\AndroidManifest.xml:19:9-21:40
+35            android:name="com.example.accounts.HistoryActivity"
+35-->G:\Android\accounts\app\src\main\AndroidManifest.xml:20:13-44
+36            android:exported="false" />
+36-->G:\Android\accounts\app\src\main\AndroidManifest.xml:21:13-37
+37        <activity
+37-->G:\Android\accounts\app\src\main\AndroidManifest.xml:22:9-24:40
+38            android:name="com.example.accounts.ChartActivity"
+38-->G:\Android\accounts\app\src\main\AndroidManifest.xml:23:13-42
+39            android:exported="false" />
+39-->G:\Android\accounts\app\src\main\AndroidManifest.xml:24:13-37
+40        <activity
+40-->G:\Android\accounts\app\src\main\AndroidManifest.xml:25:9-27:40
+41            android:name="com.example.accounts.MainActivity"
+41-->G:\Android\accounts\app\src\main\AndroidManifest.xml:26:13-41
+42            android:exported="false" />
+42-->G:\Android\accounts\app\src\main\AndroidManifest.xml:27:13-37
+43        <activity
+43-->G:\Android\accounts\app\src\main\AndroidManifest.xml:28:9-30:40
+44            android:name="com.example.accounts.SearchActivity"
+44-->G:\Android\accounts\app\src\main\AndroidManifest.xml:29:13-43
+45            android:exported="false" /> <!-- <activity -->
+45-->G:\Android\accounts\app\src\main\AndroidManifest.xml:30:13-37
+46        <!-- android:name="." -->
+47        <!-- android:exported="false" /> -->
+48        <activity
+48-->G:\Android\accounts\app\src\main\AndroidManifest.xml:33:9-35:40
+49            android:name="com.example.accounts.RecordActivity"
+49-->G:\Android\accounts\app\src\main\AndroidManifest.xml:34:13-43
+50            android:exported="false" />
+50-->G:\Android\accounts\app\src\main\AndroidManifest.xml:35:13-37
+51        <activity
+51-->G:\Android\accounts\app\src\main\AndroidManifest.xml:36:9-38:61
+52            android:name="com.example.accounts.utils.login"
+52-->G:\Android\accounts\app\src\main\AndroidManifest.xml:37:13-40
+53            android:theme="@style/AppTheme.WithActionBar" />
+53-->G:\Android\accounts\app\src\main\AndroidManifest.xml:38:13-58
+54        <activity
+54-->G:\Android\accounts\app\src\main\AndroidManifest.xml:39:9-41:40
+55            android:name="com.example.accounts.SettingsActivity"
+55-->G:\Android\accounts\app\src\main\AndroidManifest.xml:40:13-45
+56            android:exported="false" />
+56-->G:\Android\accounts\app\src\main\AndroidManifest.xml:41:13-37
+57        <activity
+57-->G:\Android\accounts\app\src\main\AndroidManifest.xml:42:9-44:40
+58            android:name="com.example.accounts.AboutActivity"
+58-->G:\Android\accounts\app\src\main\AndroidManifest.xml:43:13-42
+59            android:exported="false" />
+59-->G:\Android\accounts\app\src\main\AndroidManifest.xml:44:13-37
+60        <activity
+60-->G:\Android\accounts\app\src\main\AndroidManifest.xml:45:9-54:20
+61            android:name="com.example.accounts.userActivity"
+61-->G:\Android\accounts\app\src\main\AndroidManifest.xml:46:13-41
+62            android:exported="true"
+62-->G:\Android\accounts\app\src\main\AndroidManifest.xml:47:13-36
+63            android:theme="@style/AppTheme.WithActionBar" >
+63-->G:\Android\accounts\app\src\main\AndroidManifest.xml:48:13-58
+64            <intent-filter>
+64-->G:\Android\accounts\app\src\main\AndroidManifest.xml:49:13-53:29
+65                <action android:name="android.intent.action.MAIN" />
+65-->G:\Android\accounts\app\src\main\AndroidManifest.xml:50:17-69
+65-->G:\Android\accounts\app\src\main\AndroidManifest.xml:50:25-66
+66
+67                <category android:name="android.intent.category.LAUNCHER" />
+67-->G:\Android\accounts\app\src\main\AndroidManifest.xml:52:17-77
+67-->G:\Android\accounts\app\src\main\AndroidManifest.xml:52:27-74
+68            </intent-filter>
+69        </activity>
+70
+71        <provider
+71-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+72            android:name="androidx.startup.InitializationProvider"
+72-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+73            android:authorities="com.example.accounts.androidx-startup"
+73-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+74            android:exported="false" >
+74-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+75            <meta-data
+75-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+76                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+76-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+77                android:value="androidx.startup" />
+77-->[androidx.emoji2:emoji2:1.2.0] C:\Users\C\.gradle\caches\transforms-3\47848048e0ae0dccef812dfdd0f4f224\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+78            <meta-data
+78-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\C\.gradle\caches\transforms-3\85600535b09aca04eb153b95aac9d706\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+79                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+79-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\C\.gradle\caches\transforms-3\85600535b09aca04eb153b95aac9d706\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+80                android:value="androidx.startup" />
+80-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\C\.gradle\caches\transforms-3\85600535b09aca04eb153b95aac9d706\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+81        </provider>
+82    </application>
+83
+84</manifest>
