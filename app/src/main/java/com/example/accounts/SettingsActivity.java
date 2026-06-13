@@ -5,9 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -16,8 +19,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.accounts.db.DBManager;
+import com.example.accounts.db.UserBean;
 import com.example.accounts.utils.BudgetDialog;
 import com.example.accounts.utils.DataBackupUtils;
+import com.example.accounts.utils.PasswordUtils;
 //设置页面
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
     
@@ -188,13 +194,114 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         builder.setNegativeButton("取消", null);
         builder.create().show();
     }
-    
+
+    /**
+     * 修改密码功能
+     * 流程：弹出对话框 → 前端校验 → 校验旧密码 → 更新新密码 → 反馈结果
+     */
     private void changePassword() {
-        Toast.makeText(this, "请前往登录界面修改密码", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, userActivity.class);
-        startActivity(intent);
+        // 从SharedPreferences获取当前登录用户ID
+        SharedPreferences spf = getSharedPreferences("spfRecord", MODE_PRIVATE);
+        int currentUserId = spf.getInt("current_user_id", -1);
+
+        if (currentUserId == -1) {
+            Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // 构建密码修改对话框布局
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(60, 20, 60, 0);
+
+        final EditText etOldPass = new EditText(this);
+        etOldPass.setHint("请输入旧密码");
+        etOldPass.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        layout.addView(etOldPass);
+
+        final EditText etNewPass = new EditText(this);
+        etNewPass.setHint("请输入新密码（至少6位）");
+        etNewPass.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        layout.addView(etNewPass);
+
+        final EditText etConfirmPass = new EditText(this);
+        etConfirmPass.setHint("请再次输入新密码");
+        etConfirmPass.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        layout.addView(etConfirmPass);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("修改密码")
+                .setView(layout)
+                .setPositiveButton("确定", (dialog1, which) -> {
+                    // 前端校验
+                    String oldPass = etOldPass.getText().toString();
+                    String newPass = etNewPass.getText().toString();
+                    String confirmPass = etConfirmPass.getText().toString();
+
+                    if (TextUtils.isEmpty(oldPass)) {
+                        Toast.makeText(SettingsActivity.this, "请输入旧密码", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (TextUtils.isEmpty(newPass)) {
+                        Toast.makeText(SettingsActivity.this, "请输入新密码", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (newPass.length() < 6) {
+                        Toast.makeText(SettingsActivity.this, "新密码至少6位", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!TextUtils.equals(newPass, confirmPass)) {
+                        Toast.makeText(SettingsActivity.this, "两次新密码不一致", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // 查询用户信息用于校验旧密码
+                    UserBean user = DBManager.queryUserByUsername(
+                            spf.getString("current_username", ""));
+                    if (user == null) {
+                        Toast.makeText(SettingsActivity.this, "用户信息不存在，请重新登录",
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // 校验旧密码
+                    if (!PasswordUtils.verifyPassword(oldPass, user.getPasswordHash(), user.getSalt())) {
+                        Toast.makeText(SettingsActivity.this, "旧密码错误", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // 更新新密码（内部自动重新生成盐值）
+                    boolean success = DBManager.updatePassword(currentUserId, newPass);
+                    if (success) {
+                        Toast.makeText(SettingsActivity.this, "密码修改成功，请重新登录",
+                                Toast.LENGTH_SHORT).show();
+                        // 清除登录态并跳转登录页
+                        clearLoginState(spf);
+                        Intent intent = new Intent(this, userActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SettingsActivity.this, "密码修改失败，请稍后重试",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .create();
+
+        dialog.show();
     }
-    
+
+    /**
+     * 清除登录态
+     */
+    private void clearLoginState(SharedPreferences spf) {
+        SharedPreferences.Editor editor = spf.edit();
+        editor.remove("current_user_id");
+        editor.remove("current_username");
+        editor.remove("isRemember");
+        editor.apply();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

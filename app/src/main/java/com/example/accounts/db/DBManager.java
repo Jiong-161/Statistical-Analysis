@@ -5,13 +5,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.accounts.utils.PasswordUtils;
+
 /*
-* 负责管理数据库的类（核心）
-*   主要对于表当中的内容进行操作，增删改查，搜索
-* */
+ * 负责管理数据库的类（核心）
+ *   主要对于表当中的内容进行操作，增删改查，搜索
+ * */
 public class DBManager {
 
     private static SQLiteDatabase db;
@@ -89,7 +92,7 @@ public class DBManager {
         Cursor cursor = null;
         try {
             String sql = "select * from accounttb where year=? and month=? and day=? order by id desc";
-            cursor = getDb().rawQuery(sql, new String[]{year + "", month + "", day + ""});
+            cursor = getDb().rawQuery(sql, new String[]{String.valueOf(year), String.valueOf(month), String.valueOf(day)});
             while (cursor.moveToNext()) {
                 list.add(readAccountBean(cursor));
             }
@@ -110,7 +113,7 @@ public class DBManager {
         Cursor cursor = null;
         try {
             String sql = "select * from accounttb where year=? and month=? order by id desc";
-            cursor = getDb().rawQuery(sql, new String[]{year + "", month + ""});
+            cursor = getDb().rawQuery(sql, new String[]{String.valueOf(year), String.valueOf(month)});
             //遍历符合要求的每一行数据
             while (cursor.moveToNext()) {
                 list.add(readAccountBean(cursor));
@@ -131,7 +134,7 @@ public class DBManager {
         Cursor cursor = null;
         try {
             String sql = "select sum(money) from accounttb where year=? and month=? and day=? and kind=?";
-            cursor = getDb().rawQuery(sql, new String[]{year + "", month + "", day + "", kind + ""});
+            cursor = getDb().rawQuery(sql, new String[]{String.valueOf(year), String.valueOf(month), String.valueOf(day), String.valueOf(kind)});
             // 遍历
             total = readSumMoney(cursor);
         } finally {
@@ -150,7 +153,7 @@ public class DBManager {
         Cursor cursor = null;
         try {
             String sql = "select sum(money) from accounttb where year=? and month=? and kind=?";
-            cursor = getDb().rawQuery(sql, new String[]{year + "", month + "", kind + ""});
+            cursor = getDb().rawQuery(sql, new String[]{String.valueOf(year), String.valueOf(month), String.valueOf(kind)});
             total = readSumMoney(cursor);
         } finally {
             if (cursor != null) {
@@ -166,7 +169,7 @@ public class DBManager {
         Cursor cursor = null;
         try {
             String sql = "select count(money) from accounttb where year=? and month=? and kind=?";
-            cursor = getDb().rawQuery(sql, new String[]{year + "", month + "", kind + ""});
+            cursor = getDb().rawQuery(sql, new String[]{String.valueOf(year), String.valueOf(month), String.valueOf(kind)});
             if (cursor.moveToFirst()) {
                 int count = cursor.getInt(cursor.getColumnIndex("count(money)"));
                 total = count;
@@ -187,7 +190,7 @@ public class DBManager {
         Cursor cursor = null;
         try {
             String sql = "select sum(money) from accounttb where year=? and kind=?";
-            cursor = getDb().rawQuery(sql, new String[]{year + "", kind + ""});
+            cursor = getDb().rawQuery(sql, new String[]{String.valueOf(year), String.valueOf(kind)});
             total = readSumMoney(cursor);
         } finally {
             if (cursor != null) {
@@ -201,7 +204,7 @@ public class DBManager {
     * 根据传入的id，删除accounttb表当中的一条数据
     * */
     public static int deleteItemFromAccounttbById(int id){
-        int i = getDb().delete("accounttb", "id=?", new String[]{id + ""});
+        int i = getDb().delete("accounttb", "id=?", new String[]{String.valueOf(id)});
         return i;
     }
 
@@ -219,7 +222,7 @@ public class DBManager {
         values.put("month",bean.getMonth());
         values.put("day",bean.getDay());
         values.put("kind",bean.getKind());
-        int i = getDb().update("accounttb", values, "id=?", new String[]{bean.getId() + ""});
+        int i = getDb().update("accounttb", values, "id=?", new String[]{String.valueOf(bean.getId())});
         return i;
     }
     
@@ -232,7 +235,7 @@ public class DBManager {
         Cursor cursor = null;
         try {
             String sql = "select * from accounttb where id=?";
-            cursor = getDb().rawQuery(sql, new String[]{id + ""});
+            cursor = getDb().rawQuery(sql, new String[]{String.valueOf(id)});
             if (cursor.moveToFirst()) {
                 bean = readAccountBean(cursor);
             }
@@ -506,7 +509,7 @@ public class DBManager {
         Cursor cursor = null;
         try {
             String sql = "select sum(money) from accounttb where year=? and month=? and kind=? group by day order by sum(money) desc";
-            cursor = getDb().rawQuery(sql, new String[]{year + "", month + "", kind + ""});
+            cursor = getDb().rawQuery(sql, new String[]{String.valueOf(year), String.valueOf(month), String.valueOf(kind)});
             return readSumMoney(cursor);
         } finally {
             if (cursor != null) {
@@ -535,5 +538,136 @@ public class DBManager {
             return cursor.getFloat(0);
         }
         return 0f;
+    }
+
+    // ==================== 用户管理方法 ====================
+
+    /**
+     * 用户注册：向usertb表插入新用户数据
+     * 调用方需在调用前完成前端校验（用户名长度、密码强度、两次密码一致）
+     * 和查重（isUsernameExists），本方法只负责写入数据库
+     *
+     * @param username 用户名（已校验非空且长度合法）
+     * @param password 明文密码（已校验强度）
+     * @return 注册成功返回true；主键冲突或SQL异常返回false
+     */
+    public static boolean registerUser(String username, String password) {
+        try {
+            // 生成随机盐值 + 计算SHA-256哈希
+            String salt = PasswordUtils.generateSalt();
+            String hashPassword = PasswordUtils.hashPassword(password, salt);
+            if (hashPassword == null) {
+                android.util.Log.e("DBManager", "registerUser: 密码哈希计算失败");
+                return false;
+            }
+
+            ContentValues values = new ContentValues();
+            values.put(DBOpenHelper.USER_USERNAME, username);
+            values.put(DBOpenHelper.USER_PASSWORD_HASH, hashPassword);
+            values.put(DBOpenHelper.USER_SALT, salt);
+            values.put(DBOpenHelper.USER_STATUS, 0); // 正常状态
+            values.put(DBOpenHelper.USER_CREATED_AT, System.currentTimeMillis());
+
+            long result = getDb().insert(DBOpenHelper.TABLE_USER, null, values);
+            return result != -1;
+        } catch (Exception e) {
+            android.util.Log.e("DBManager", "registerUser: 注册失败", e);
+            return false;
+        }
+    }
+
+    /**
+     * 根据用户名查询用户完整信息
+     * 用于登录时获取用户的哈希值和盐值进行密码比对
+     *
+     * @param username 用户名
+     * @return 查询到返回UserBean对象；未找到或异常时返回null
+     */
+    @SuppressLint("Range")
+    public static UserBean queryUserByUsername(String username) {
+        UserBean bean = null;
+        Cursor cursor = null;
+        try {
+            String sql = "SELECT * FROM " + DBOpenHelper.TABLE_USER +
+                    " WHERE " + DBOpenHelper.USER_USERNAME + " = ? LIMIT 1";
+            cursor = getDb().rawQuery(sql, new String[]{username});
+            if (cursor.moveToFirst()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_USERNAME));
+                String hash = cursor.getString(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_PASSWORD_HASH));
+                String salt = cursor.getString(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_SALT));
+                int status = cursor.getInt(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_STATUS));
+                long createdAt = cursor.getLong(cursor.getColumnIndexOrThrow(DBOpenHelper.USER_CREATED_AT));
+                bean = new UserBean(id, name, hash, salt, status, createdAt);
+            }
+        } catch (Exception e) {
+            android.util.Log.e("DBManager", "queryUserByUsername: 查询失败", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return bean;
+    }
+
+    /**
+     * 检查用户名是否已存在
+     * 用于注册前的重复性校验
+     *
+     * @param username 待检查的用户名
+     * @return 已存在返回true，不存在或异常返回false
+     */
+    public static boolean isUsernameExists(String username) {
+        Cursor cursor = null;
+        try {
+            String sql = "SELECT COUNT(*) FROM " + DBOpenHelper.TABLE_USER +
+                    " WHERE " + DBOpenHelper.USER_USERNAME + " = ?";
+            cursor = getDb().rawQuery(sql, new String[]{username});
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0) > 0;
+            }
+        } catch (Exception e) {
+            android.util.Log.e("DBManager", "isUsernameExists: 查询失败", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 根据用户ID更新密码（修改密码功能）
+     * 强制重新生成盐值，不复用旧盐值
+     *
+     * @param userId      用户ID
+     * @param newPassword 新的明文密码（已校验强度）
+     * @return 更新成功返回true；用户不存在或SQL异常返回false
+     */
+    public static boolean updatePassword(int userId, String newPassword) {
+        try {
+            // 生成全新随机盐值 + 计算新哈希
+            String newSalt = PasswordUtils.generateSalt();
+            String newHashPassword = PasswordUtils.hashPassword(newPassword, newSalt);
+            if (newHashPassword == null) {
+                android.util.Log.e("DBManager", "updatePassword: 密码哈希计算失败");
+                return false;
+            }
+
+            ContentValues values = new ContentValues();
+            values.put(DBOpenHelper.USER_PASSWORD_HASH, newHashPassword);
+            values.put(DBOpenHelper.USER_SALT, newSalt);
+
+            int affectedRows = getDb().update(
+                    DBOpenHelper.TABLE_USER,
+                    values,
+                    DBOpenHelper.USER_ID + " = ?",
+                    new String[]{String.valueOf(userId)}
+            );
+            return affectedRows > 0;
+        } catch (Exception e) {
+            android.util.Log.e("DBManager", "updatePassword: 更新失败", e);
+            return false;
+        }
     }
 }

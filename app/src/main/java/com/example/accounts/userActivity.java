@@ -1,7 +1,5 @@
 package com.example.accounts;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,146 +14,171 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.accounts.utils.login;
+import com.example.accounts.db.DBManager;
+import com.example.accounts.db.UserBean;
+import com.example.accounts.utils.PasswordUtils;
 
-
+/**
+ * 登录页面
+ * <p>
+ * 登录流程：输入校验 → 根据用户名查询用户 → SHA-256哈希比对密码
+ * → 保存登录态到SharedPreferences → 跳转主页面
+ * </p>
+ */
 public class userActivity extends AppCompatActivity {
-    //用户登录界面的Java实现
 
     private static final String TAG = "userActivity";
-    Button btn1;
+    /**
+     * 注册请求码
+     */
+    public static final int REQUEST_CODE_REGISTER = 2;
+    private static final String SPF_NAME = "spfRecord";
+    /**
+     * SharedPreferences 键名常量
+     */
+    private static final String KEY_CURRENT_USER_ID = "current_user_id";
+    private static final String KEY_CURRENT_USERNAME = "current_username";
+    private static final String KEY_IS_REMEMBER = "isRemember";
+    private Button btn1;
     private EditText etAccount, etPassword;
     private CheckBox cbRemember;
-    // private CheckBox cbAutoLogin;
-    public static final int REQUEST_CODE_REGISTER = 2;//注册请求码，
-
-    private String userName = "ccc";//自定义用户名
-    private String pass = "1234";//自定义密码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-       // btn1 = (Button) findViewById(R.id.btn_login);
         getSupportActionBar().setTitle("登录");
-       // btn1.setOnClickListener(this);
+
         initView();
         initData();
-        btn1.setOnClickListener(new View.OnClickListener() {//btn1添加点击事件
-            @Override
-            public void onClick(View v) {//监听器
-                String account = etAccount.getText().toString();//检查输入用户名
-                String password = etPassword.getText().toString();//用户输入密码
-
-                Log.d(TAG, "onClick: -------------" + account);
-                Log.d(TAG, "password: -------------" + password);
-
-                if (TextUtils.isEmpty(userName)) {
-                    Toast.makeText(userActivity.this, "还没有注册账号！", Toast.LENGTH_LONG).show();
-                    return;
-                }/*注册账号的判断*/
-
-                  /*检查账号和密码
-                  * * 检查账号是否与`userName`匹配。
-                  * 如果匹配，再检查密码是否与`pass`（同样，此变量在代码段中未定义）匹配。
-  a. 如果账号和密码都匹配，显示登录成功的Toast消息，并根据复选框`cbRemember`和`cbAutoLogin`的状态更新SharedPreferences。
-  b. 如果密码不匹配，显示密码错误的Toast消息。
-  c. 如果账号不匹配，显示用户名错误的Toast消息。*/
-                if (TextUtils.equals(account, userName)) {
-                    if (TextUtils.equals(password, pass)) {
-
-                        Toast.makeText(userActivity.this, "恭喜你，登录成功！", Toast.LENGTH_LONG).show();
-                        if (cbRemember.isChecked()) {
-                            SharedPreferences spf = getSharedPreferences("spfRecord", MODE_PRIVATE);
-                            SharedPreferences.Editor edit = spf.edit();
-                            edit.putString("account", account);
-                            edit.putString("password", password);
-                            edit.putBoolean("isRemember", true);
-                            // 自动登录已关闭，始终不保存自动登录状态
-                            edit.putBoolean("isLogin", false);
-                            edit.apply();
-
-                        } else {//更新SharedPreferences:
-                            SharedPreferences spf = getSharedPreferences("spfRecord", MODE_PRIVATE);
-                            SharedPreferences.Editor edit = spf.edit();
-                            edit.putBoolean("isRemember", false);
-                            edit.apply();
-                        }
-                        //启动新活动
-
-                        Intent intent = new Intent(userActivity.this, MainActivity.class);
-                        intent.putExtra("account", account);
-                        startActivity(intent);
-                        userActivity.this.finish();
-
-                    } else {
-                        Toast.makeText(userActivity.this, "密码错误！", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Toast.makeText(userActivity.this, "用户名错误！", Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
-
-        // 自动登录已关闭
-        // cbAutoLogin.setOnCheckedChangeListener(...);
-        // cbRemember.setOnCheckedChangeListener(...);
-
+        initLoginButton();
     }
 
+    /**
+     * 初始化视图控件
+     */
     private void initView() {
         btn1 = findViewById(R.id.btn_login);
         etAccount = findViewById(R.id.et_account);
         etPassword = findViewById(R.id.et_password);
         cbRemember = findViewById(R.id.cb_remember);
-        // cbAutoLogin = findViewById(R.id.cb_auto_login);
     }
 
+    /**
+     * 初始化数据（从SharedPreferences恢复记住的账号）
+     */
     private void initData() {
-        SharedPreferences spf = getSharedPreferences("spfRecord", MODE_PRIVATE);
-        boolean isRemember = spf.getBoolean("isRemember", false);
-        // 自动登录已关闭，不再根据 isLogin 跳转主页
-        // boolean isLogin = spf.getBoolean("isLogin", false);
-        String account = spf.getString("account", "");
-        String password = spf.getString("password", "");
+        SharedPreferences spf = getSharedPreferences(SPF_NAME, MODE_PRIVATE);
+        boolean isRemember = spf.getBoolean(KEY_IS_REMEMBER, false);
+        String account = spf.getString(KEY_CURRENT_USERNAME, "");
 
-        userName = account;
-        pass = password;
-
-        if (isRemember) {
+        if (isRemember && !TextUtils.isEmpty(account)) {
             etAccount.setText(account);
-            etPassword.setText(password);
             cbRemember.setChecked(true);
+            // 密码不回填，仅回填账号名
         }
     }
 
+    /**
+     * 初始化登录按钮点击事件
+     */
+    private void initLoginButton() {
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performLogin();
+            }
+        });
+    }
 
-   /*跳转页面注册*/
+    /**
+     * 执行登录操作
+     * 流程：输入校验 → 查询用户 → 哈希比对 → 保存登录态 → 跳转主页
+     */
+    private void performLogin() {
+        // 1. 输入校验
+        String account = etAccount.getText().toString().trim();
+        String password = etPassword.getText().toString();
 
+        Log.d(TAG, "onClick: 登录账号=" + account);
+
+        if (TextUtils.isEmpty(account)) {
+            Toast.makeText(userActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(userActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // 2. 根据用户名查询数据库中的用户信息
+        UserBean user = DBManager.queryUserByUsername(account);
+
+        // 3. 判断用户是否存在
+        if (user == null) {
+            Toast.makeText(userActivity.this, "该用户名尚未注册", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // 4. 检查账号状态
+        if (user.getStatus() != 0) {
+            Toast.makeText(userActivity.this, "该账号已被禁用", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // 5. 使用SHA-256+盐值哈希比对密码
+        if (!PasswordUtils.verifyPassword(password, user.getPasswordHash(), user.getSalt())) {
+            Toast.makeText(userActivity.this, "密码错误", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // 6. 密码正确，保存登录态到SharedPreferences
+        saveLoginState(account, user.getId());
+
+        // 7. 跳转到主页面
+        Toast.makeText(userActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(userActivity.this, MainActivity.class);
+        intent.putExtra("account", account);
+        startActivity(intent);
+        finish();
+    }
+
+    /**
+     * 保存登录状态到SharedPreferences
+     *
+     * @param account 用户名
+     * @param userId  用户ID
+     */
+    private void saveLoginState(String account, int userId) {
+        SharedPreferences spf = getSharedPreferences(SPF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor edit = spf.edit();
+
+        edit.putInt(KEY_CURRENT_USER_ID, userId);
+        edit.putString(KEY_CURRENT_USERNAME, account);
+        edit.putBoolean(KEY_IS_REMEMBER, cbRemember.isChecked());
+        edit.apply();
+    }
+
+    /**
+     * 跳转到注册页面
+     */
     public void toRegister(View view) {
-        Intent intent = new Intent(this, login.class);
-
+        Intent intent = new Intent(this, com.example.accounts.utils.login.class);
         startActivityForResult(intent, REQUEST_CODE_REGISTER);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_REGISTER && resultCode == login.RESULT_CODE_REGISTER && data != null) {
-            Bundle extras = data.getExtras();
-
-            String account = extras.getString("account", "");
-            String password = extras.getString("password", "");
-
-            etAccount.setText(account);
-            etPassword.setText(password);
-
-            userName = account;
-            pass = password;
+        if (requestCode == REQUEST_CODE_REGISTER && resultCode == com.example.accounts.utils.login.RESULT_CODE_REGISTER
+                && data != null) {
+            // 注册成功后自动回填注册的用户名
+            String account = data.getStringExtra("account");
+            if (!TextUtils.isEmpty(account)) {
+                etAccount.setText(account);
+                etPassword.setText("");
+                etPassword.requestFocus();
+            }
         }
     }
 }
-
-
-

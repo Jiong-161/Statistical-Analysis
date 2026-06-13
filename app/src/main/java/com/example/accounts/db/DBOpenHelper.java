@@ -26,18 +26,32 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBOpenHelper";
 
     // ==================== 数据库基础常量 ====================
-    /** 数据库文件名 */
+    /**
+     * 数据库文件名
+     */
     public static final String DB_NAME = "ZH-1.db";
-    /** 数据库版本号 */
-    public static final int DB_VERSION = 2;
+    /**
+     * 数据库版本号
+     */
+    public static final int DB_VERSION = 3;
 
     // ==================== 表名常量 ====================
-    /** 收支类型表 */
+    /**
+     * 收支类型表
+     */
     public static final String TABLE_TYPE = "typetb";
-    /** 记账记录表 */
+    /**
+     * 记账记录表
+     */
     public static final String TABLE_ACCOUNT = "accounttb";
-    /** 搜索历史表 */
+    /**
+     * 搜索历史表
+     */
     public static final String TABLE_SEARCH_HISTORY = "searchhistorytb";
+    /**
+     * 用户表
+     */
+    public static final String TABLE_USER = "usertb";
 
     // ==================== typetb 表字段 ====================
     public static final String TYPE_ID = "id";
@@ -65,18 +79,61 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     public static final String HISTORY_COUNT = "searchcount";
 
     // ==================== 索引名常量 ====================
-    /** 备注字段索引 */
+    /**
+     * 备注字段索引
+     */
     public static final String IDX_ACCOUNT_BEIZHU = "idx_accounttb_beizhu";
-    /** 时间字段索引 */
+    /**
+     * 时间字段索引
+     */
     public static final String IDX_ACCOUNT_TIME = "idx_accounttb_time";
-    /** 年月日复合索引 */
+    /**
+     * 年月日复合索引
+     */
     public static final String IDX_ACCOUNT_YEAR_MONTH_DAY = "idx_accounttb_year_month_day";
-    /** 搜索历史关键词索引 */
+    /**
+     * 搜索历史关键词索引
+     */
     public static final String IDX_HISTORY_KEYWORD = "idx_searchhistory_keyword";
-    /** 搜索历史时间索引 */
+    /**
+     * 搜索历史时间索引
+     */
     public static final String IDX_HISTORY_TIME = "idx_searchhistory_time";
 
+    // ==================== usertb 表字段 ====================
+    /**
+     * 用户ID
+     */
+    public static final String USER_ID = "id";
+    /**
+     * 用户名
+     */
+    public static final String USER_USERNAME = "username";
+    /**
+     * 密码哈希值
+     */
+    public static final String USER_PASSWORD_HASH = "password_hash";
+    /**
+     * 盐值
+     */
+    public static final String USER_SALT = "salt";
+    /**
+     * 账号状态：0-正常，1-禁用
+     */
+    public static final String USER_STATUS = "status";
+    /**
+     * 注册时间戳（毫秒）
+     */
+    public static final String USER_CREATED_AT = "created_at";
+
+    // ==================== usertb 索引常量 ====================
+    /**
+     * 用户名唯一索引
+     */
+    public static final String IDX_USER_USERNAME = "idx_usertb_username";
+
     // ==================== 构造函数 ====================
+
     /**
      * 构造函数
      *
@@ -119,6 +176,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
             // 5. 创建搜索历史表
             createSearchHistoryTable(db);
+
+            // 6. 创建用户表
+            createUserTable(db);
 
             Log.i(TAG, "onCreate: Database initialization completed successfully");
         } catch (Exception e) {
@@ -211,6 +271,29 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 " ON " + TABLE_SEARCH_HISTORY + "(" + HISTORY_TIME + ")");
 
         Log.d(TAG, "createSearchHistoryTable: Search history table created successfully");
+    }
+
+    /**
+     * 创建用户表
+     *
+     * @param db SQLiteDatabase实例
+     */
+    private void createUserTable(SQLiteDatabase db) {
+        Log.d(TAG, "createUserTable: Creating user table");
+        String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_USER + " (" +
+                USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                USER_USERNAME + " VARCHAR(20) UNIQUE NOT NULL," +
+                USER_PASSWORD_HASH + " VARCHAR(64) NOT NULL," +
+                USER_SALT + " VARCHAR(32) NOT NULL," +
+                USER_STATUS + " INTEGER DEFAULT 0," +
+                USER_CREATED_AT + " INTEGER NOT NULL)";
+        db.execSQL(sql);
+
+        // 创建用户名唯一索引（加速登录查询 + 防重复注册）
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS " + IDX_USER_USERNAME +
+                " ON " + TABLE_USER + "(" + USER_USERNAME + ")");
+
+        Log.d(TAG, "createUserTable: User table created successfully");
     }
 
     // ==================== 初始化数据方法 ====================
@@ -307,6 +390,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         case 2:
             upgradeToVersion2(db);
             break;
+        case 3:
+            upgradeToVersion3(db);
+            break;
         // 未来可以添加更多版本的升级逻辑
         default:
             Log.w(TAG, "upgradeToVersion: Unknown target version " + targetVersion);
@@ -344,6 +430,29 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         }
 
         Log.i(TAG, "upgradeToVersion2: Upgrade to version 2 completed");
+    }
+
+    /**
+     * 升级到版本3
+     * <p>
+     * 升级内容：
+     * - 创建usertb用户表（注册/登录/密码管理）
+     * - 不影响原有accounttb/typetb/searchhistorytb表结构
+     * </p>
+     *
+     * @param db SQLiteDatabase实例
+     */
+    private void upgradeToVersion3(SQLiteDatabase db) {
+        Log.i(TAG, "upgradeToVersion3: Starting upgrade to version 3");
+
+        try {
+            createUserTable(db);
+            Log.i(TAG, "upgradeToVersion3: User table created successfully");
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion3: Failed to create user table", e);
+        }
+
+        Log.i(TAG, "upgradeToVersion3: Upgrade to version 3 completed");
     }
 
     /**
