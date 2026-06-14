@@ -1,5 +1,6 @@
 package com.example.accounts.frag_record;
 
+import android.graphics.Color;
 import android.view.View;
 
 import com.example.accounts.R;
@@ -16,6 +17,12 @@ public class OutcomeFragment extends BaseRecordFragment {
     @Override
     protected int getDefaultImageId() {
         return R.drawable.ic_qita_fs;
+    }
+
+    @Override
+    protected void setMoneyColor() {
+        // 支出页面：金额显示为红色
+        moneyEt.setTextColor(Color.parseColor("#EF4444"));
     }
 
     // 重写

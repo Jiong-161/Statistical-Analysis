@@ -1,6 +1,7 @@
 package com.example.accounts.frag_record;
 
 import android.inputmethodservice.KeyboardView;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -198,6 +199,8 @@ public abstract class BaseRecordFragment extends Fragment implements View.OnClic
         //让自定义软键盘显示出来
         KeyBoardUtils boardUtils = new KeyBoardUtils(keyboardView, moneyEt);
         boardUtils.showKeyboard();
+        //设置金额输入框颜色（由子类实现）
+        setMoneyColor();
         //设置接口，监听确定按钮按钮被点击了
         boardUtils.setOnEnsureListener(new KeyBoardUtils.OnEnsureListener() {
             @Override
@@ -222,6 +225,9 @@ public abstract class BaseRecordFragment extends Fragment implements View.OnClic
     }
     /* 获取默认图标ID - 子类实现 */
     protected abstract int getDefaultImageId();
+
+    /* 设置金额输入框颜色 - 子类实现 */
+    protected abstract void setMoneyColor();
     
     /* 让子类一定要重写这个方法*/
     public abstract void saveAccountToDB();

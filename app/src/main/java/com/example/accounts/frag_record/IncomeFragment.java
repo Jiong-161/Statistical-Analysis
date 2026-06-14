@@ -1,6 +1,8 @@
 package com.example.accounts.frag_record;
 
 
+import android.graphics.Color;
+
 import com.example.accounts.R;
 import com.example.accounts.db.DBManager;
 import com.example.accounts.db.TypeBean;
@@ -20,6 +22,12 @@ public class IncomeFragment extends BaseRecordFragment {
     @Override
     protected int getDefaultImageId() {
         return R.drawable.in_qt_fs;
+    }
+
+    @Override
+    protected void setMoneyColor() {
+        // 收入页面：金额显示为绿色
+        moneyEt.setTextColor(Color.parseColor("#10B981"));
     }
 
     @Override

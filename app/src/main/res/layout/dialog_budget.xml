@@ -26,7 +26,8 @@
         android:text="￥"
         android:layout_below="@id/dialog_budget_tv1"
         android:textSize="20sp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:textColor="@color/text_primary"/>
     <EditText
         android:id="@+id/dialog_budget_et"
         android:layout_width="match_parent"

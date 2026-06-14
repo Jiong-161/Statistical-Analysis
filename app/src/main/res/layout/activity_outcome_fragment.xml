@@ -29,7 +29,8 @@
             android:layout_toRightOf="@id/frag_record_iv"
             android:text="其他"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
 
         <EditText
             android:id="@+id/frag_record_et_money"
@@ -76,7 +77,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:padding="10dp"
-            android:text="2020年10月30日 18:49"/>
+            android:text="2020年10月30日 18:49"
+            android:textColor="@color/text_secondary" />
 
         <TextView
             android:id="@+id/frag_record_tv_beizhu"
@@ -84,7 +86,8 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/frag_record_tv_time"
             android:padding="10dp"
-            android:text="添加备注"/>
+            android:text="添加备注"
+            android:textColor="@color/black" />
     </RelativeLayout>
 
     <!-- 类型选择：限定高度后可上下滑动 -->

@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/month_out"
                     android:textSize="12sp"
-                    android:textColor="@color/grey"/>
+                    android:textColor="@color/text_secondary" />
 
                 <TextView
                     android:id="@+id/chart_tv_out"
@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/month_in"
                     android:textSize="12sp"
-                    android:textColor="@color/grey"/>
+                    android:textColor="@color/text_secondary" />
 
                 <TextView
                     android:id="@+id/chart_tv_in"
@@ -157,7 +157,7 @@
                 android:layout_weight="1"
                 android:text="@string/in"
                 android:textSize="14sp"
-                android:textColor="@color/grey"
+                android:textColor="@color/text_secondary"
                 android:gravity="center"
                 android:padding="12dp"/>
         </LinearLayout>
@@ -190,7 +190,7 @@
                 android:layout_weight="1"
                 android:text="月"
                 android:textSize="14sp"
-                android:textColor="@color/grey"
+                android:textColor="@color/text_secondary"
                 android:gravity="center"
                 android:padding="12dp"/>
 
@@ -201,7 +201,7 @@
                 android:layout_weight="1"
                 android:text="年"
                 android:textSize="14sp"
-                android:textColor="@color/grey"
+                android:textColor="@color/text_secondary"
                 android:gravity="center"
                 android:padding="12dp"/>
         </LinearLayout>

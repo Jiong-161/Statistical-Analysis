@@ -181,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="Copyright © 2026 统计分析记账管理系统"
-                android:textColor="#CCCCCC"
+                android:textColor="@color/text_hint"
                 android:textSize="12sp" />
 
         </LinearLayout>

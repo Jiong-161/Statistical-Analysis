@@ -404,12 +404,12 @@ public class ChartActivity extends AppCompatActivity implements View.OnClickList
             outcomeTab.setBackgroundColor(Color.parseColor("#f3f3f3"));
             outcomeTab.setTextColor(Color.BLACK);
             incomeTab.setBackgroundColor(Color.WHITE);
-            incomeTab.setTextColor(Color.GRAY);
+            incomeTab.setTextColor(Color.parseColor("#6B7280"));
         } else {
             incomeTab.setBackgroundColor(Color.parseColor("#f3f3f3"));
             incomeTab.setTextColor(Color.BLACK);
             outcomeTab.setBackgroundColor(Color.WHITE);
-            outcomeTab.setTextColor(Color.GRAY);
+            outcomeTab.setTextColor(Color.parseColor("#6B7280"));
         }
         
         loadPieChartData();
